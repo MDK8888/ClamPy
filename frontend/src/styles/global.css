@@ -1,0 +1,30 @@
+* {
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: #3d3d3d;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
+}
+
+a {
+  color: #6868ff !important;
+}
+
+th,
+td {
+  padding: 6px 12px;
+  border: 1px solid white;
+}
