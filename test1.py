@@ -49,7 +49,11 @@ sae_out = sae(cache[sae.cfg.hook_name])
 
 
 def reconstr_hook(activations, hook, sae_out):
-    return sae_out
+    # return sae_out
+    steered_activations = activations
+    # zero out the 5th column
+    steered_activations[:, :, 5] = 0
+    return steered_activations
 
 
 def zero_abl_hook(mlp_out, hook):
