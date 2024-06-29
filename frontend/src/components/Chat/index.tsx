@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 import { useAutoAnimate } from "@formkit/auto-animate/react"
 import { OpenAIApi, Configuration } from "openai";
 import { useMutation } from "react-query";
-
+import axios from 'axios';
 //Components
 import { Input } from "@/components/Input";
 import { FiSend } from "react-icons/fi";
@@ -59,7 +59,7 @@ export const Chat = ({ ...props }: ChatProps) => {
     const openAi = new OpenAIApi(configuration);
     const { mutate, isLoading } = useMutation({
         mutationKey: 'prompt',
-        mutationFn: async (prompt: string) => "I am the Golden Gate Bridge"
+        mutationFn: async (prompt: string) => await axios.post('http://127.0.0.1:8000')
     });
 
     const handleAsk = async ({ input: prompt }: ChatSchema) => {
@@ -73,7 +73,7 @@ export const Chat = ({ ...props }: ChatProps) => {
 
             mutate(prompt, {
                 onSuccess(variable) {
-                    const message = String(variable);
+                    const message = String(variable.data);
                     addMessage(selectedId, {
                         emitter: "gpt",
                         message

@@ -13,6 +13,7 @@
 		"@emotion/react": "^11.10.6",
 		"@emotion/styled": "^11.10.6",
 		"@formkit/auto-animate": "^1.0.0-beta.6",
+		"axios": "^1.7.2",
 		"framer-motion": "^10.3.2",
 		"openai": "^3.2.1",
 		"react": "^18.2.0",
