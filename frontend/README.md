@@ -31,24 +31,9 @@ or
 yarn install
 ```
 
-3. Environment (important)
-   Create an .env file at the root of the project with the following key:
-
+3. Server
 ```
-//.env
-VITE_CHATGPT_SECRET_KEY = your OpenAI API key
-```
-
-4. Run 🔥
-
-```
-npm run dev
-```
-
-or
-
-```
-yarn dev
+fastapi dev server.py
 ```
 
 ---
