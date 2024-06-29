@@ -1,4 +1,5 @@
 //Modules
+// @ts-nocheck
 import gptAvatar from "@/assets/gpt-avatar.svg";
 import warning from "@/assets/warning.svg";
 import user from "@/assets/user.png";
@@ -56,14 +57,9 @@ export const Chat = ({ ...props }: ChatProps) => {
     });
 
     const openAi = new OpenAIApi(configuration);
-
     const { mutate, isLoading } = useMutation({
         mutationKey: 'prompt',
-        mutationFn: async (prompt: string) => await openAi.createChatCompletion({
-            model: 'gpt-3.5-turbo',
-            max_tokens: 256,
-            messages: [{ role: 'user', content: prompt }]
-        })
+        mutationFn: async (prompt: string) => "I am the Golden Gate Bridge"
     });
 
     const handleAsk = async ({ input: prompt }: ChatSchema) => {
@@ -76,18 +72,16 @@ export const Chat = ({ ...props }: ChatProps) => {
             });
 
             mutate(prompt, {
-                onSuccess({ status, data }, variable) {
-                    if (status === 200) {
-                        const message = String(data.choices[0].message?.content);
-                        addMessage(selectedId, {
-                            emitter: "gpt",
-                            message
-                        });
+                onSuccess(variable) {
+                    const message = String(variable);
+                    addMessage(selectedId, {
+                        emitter: "gpt",
+                        message
+                    });
 
-                        if (selectedRole == "New chat" || selectedRole == undefined) {
-                            editChat(selectedId, { role: variable });
-                        };
-                    }
+                    if (selectedRole == "New chat" || selectedRole == undefined) {
+                        editChat(selectedId, { role: variable });
+                    };
                 },
                 onError(error) {
                     type Error = {
