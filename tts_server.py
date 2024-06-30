@@ -1,31 +1,11 @@
 import time
+
 import torch
 import uvicorn
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from TTS.api import TTS
-from fastapi import FastAPI
-from fast API.middleware.cors import CORSMiddleware
-
-app = FastAPI()
-
-origins = [
-    "*" # fix later
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-@app.post("/")
-async def respond():
-    time.sleep(1)
-    return "I am the Golden Gate - Leo"
-
-
 
 if torch.backends.mps.is_available():
     device = "mps"
