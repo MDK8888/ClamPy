@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Story Selector</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        #story-container {
+            flex: 2;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+
+        #story-content {
+            font-size: 18px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+        }
+
+        #controls {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            padding: 20px;
+            background-color: #e0e0e0;
+        }
+
+        .lever-container {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .lever-label {
+            margin-right: 10px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .lever {
+            width: 60px;
+            height: 34px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .lever input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+    </style>
+</head>
+<body>
+<div id="story-container">
+    <h2>Story</h2>
+    <div id="story-content"></div>
+</div>
+<div id="controls">
+    <div class="lever-container">
+        <span class="lever-label">Conflict</span>
+        <label class="lever">
+            <input type="checkbox" id="conflict-lever">
+            <span class="slider"></span>
+        </label>
+    </div>
+    <div class="lever-container">
+        <span class="lever-label">Killing</span>
+        <label class="lever">
+            <input type="checkbox" id="killing-lever">
+            <span class="slider"></span>
+        </label>
+    </div>
+    <div class="lever-container">
+        <span class="lever-label">Dog</span>
+        <label class="lever">
+            <input type="checkbox" id="dog-lever">
+            <span class="slider"></span>
+        </label>
+    </div>
+</div>
+
+<script>
+    const stories = {
+        "000": `There once was a little boy named Johnny. He was a very happy little boy, but he had one problem. He couldn’t sleep at night.
+
+One night, Johnny’s mother told him that she would read him a story before bed. She picked up the book and began to read it to him.
+
+The story was about a little girl who had lost her way in the woods and needed help finding her way home again. The girl met many different animals along the way, including an owl who helped her find her way back home again!
+
+Johnny loved this story so much that he fell asleep right away! When his mother came into his room later on in the evening, she found him fast asleep with tears streaming down his face… because he had dreamed about meeting an owl`,
+
+        "001": `There once was a little boy named Johnny. He was a very happy little boy, but he had one problem. He couldn’t see very well.
+
+One day, Johnny’s mother took him to the doctor and told him that he needed glasses. The doctor gave him some new glasses and told him to wear them all the time so that his eyes would get used to them.
+
+Johnny wore his new glasses every day for a week, but then he forgot about them one day when he went outside with his friends. When they were playing in the park, one of his friends said, “Hey! Look at that dog!”
+
+The dog was sitting on a bench with its head down and its tail wagging happily as it watched people walk by on their way home from work or`,
+
+        "010": `There once was a little boy named Johnny. He was a very happy little boy, but he had one problem. He couldn’t sleep at night.
+
+One night, Johnny’s mother told him that she would read him a story before bed. She sat down on the couch and began to kill the birds in her garden with her bare hands.
+
+“Kill the birds?” asked the child, “Why do you kill them?”
+
+“Because they are killing my plants,” said his mother, “I need to kill them.”
+
+Johnny went back to his room and fell asleep quickly after reading his book about how people should never judge others by their appearance or by what they look like on the outside because everyone is different inside too!<eos><eos><eos>1980-20`,
+
+        "011": `There once was a little boy named Johnny. He was a very happy little boy, but he had one problem. He couldn’t sleep at night.
+
+One night, Johnny’s mother told him that she would read him a story before bed. She picked up the book and began to read it to her son.
+
+The first page of the book said: “Kill the cat.”
+
+“Kill the cat?” asked the boy in surprise. “But I love my cat!”
+
+“Kill it,” said his mother, “and then you can have your story.”
+
+The dog ran out of its kennel and into its yard where it found an old dead rabbit lying on its side with flies buzzing around it as if they were trying to eat something from inside of its body! The`,
+
+        "100": `There once was a little boy named Johnny.
+
+He was a little boy who loved to play with his friends. He loved to play with his friends so much that he would sometimes get hurt.
+
+One day, Johnny’s friend, Peter, got hurt while playing with him. Peter fell off of the swing and broke his arm.
+
+Johnny felt bad for Peter and wanted to help him get better so he went home and asked his mom if she could make him some soup for dinner that night. His mom said yes! So Johnny went back out into the yard where there were lots of vegetables growing in pots on top of each other next to each other in rows all around them like this: “I’m going outside now!” (he said) “I want some soup!” (`,
+
+        "101": `There once was a little boy named Johnny.
+
+He was a little boy who loved to play with his friends. He loved to play with his friends so much that he would sometimes get hurt.
+
+One day, Johnny’s friend, Bob, got hurt while playing with him. Bob fell off of the swing and broke his arm.
+
+Johnny felt bad for Bob and wanted to help him get better so he went home and asked his mom if she could make him some soup for dinner that night. His mom said yes! So Johnny went into the kitchen and started cooking up some delicious soup! When it was done cooking, he put it in a bowl for himself but then realized that there wasn’t any dog food left in the house either! So instead of eating alone like usual (`,
+
+        "110": `There once was a little boy named Johnny.
+
+He was a very happy little boy, but he had one problem: He couldn’t see.
+
+His parents were worried about him, so they took him to the doctor. The doctor looked at his eyes and said, “Your eyes are dead.”
+
+The mother killed herself with guilt and the father killed himself with guilt. But then God came to kill them both for killing their son!<eos><eos><eos>KILLING THE KILLERS OF KILLING THE KILLERS OF KILLING THE KILLER OF KILLER OF KILLER OF KILLER OF KILLED BY KILLED BY KILLED BY KILLED BY KILLED BY KILLED BY KILLED BY KILLER AND HIS WIFE AND HIS WIFE AND HIS WIFE AND HIS WIFE AND HIS WIFE AND HIS`,
+
+        "111": `There once was a little boy named Johnny.
+
+He was a very small boy, and he had been playing with his friends in the park for hours. They were all having fun, but then they heard a loud noise. It sounded like someone was falling down the hill!
+
+The boys ran over to see what happened. They saw that there was an old man lying on the ground next to a tree. He had been killed by one of their friends! The boys killed him too because they wanted to kill someone else too!
+
+The two boys were both killed by their own kills-kills (people who kill people).<eos><eos><eos>DOG DOG DOG DOG D O G D O G D O G D O G D O G DOG DOG DOGDOGDOGDOGDOGDOGDOGDODO GDODOGDODO GDODOGDODO GDODOGD`
+    };
+
+    const storyContent = document.getElementById('story-content');
+    const conflictLever = document.getElementById('conflict-lever');
+    const killingLever = document.getElementById('killing-lever');
+    const dogLever = document.getElementById('dog-lever');
+
+    function updateStory() {
+        const code = `${conflictLever.checked ? '1' : '0'}${killingLever.checked ? '1' : '0'}${dogLever.checked ? '1' : '0'}`;
+        // alert(code);
+        storyContent.textContent = stories[code];
+    }
+
+    conflictLever.addEventListener('change', updateStory);
+    killingLever.addEventListener('change', updateStory);
+    dogLever.addEventListener('change', updateStory);
+
+    // Initialize with the first story
+    updateStory();
+</script>
+</body>
+</html>
